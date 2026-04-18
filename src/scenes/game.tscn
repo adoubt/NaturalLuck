@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://d2kgbmbjjrawi"]
 
 [ext_resource type="Script" uid="uid://0qwd1ck0jbud" path="res://src/scripts/game/game.gd" id="1_qfxj7"]
+[ext_resource type="PackedScene" uid="uid://bbxlpgv2jb6uc" path="res://src/scenes/enemy.tscn" id="2_3rtjt"]
+[ext_resource type="PackedScene" uid="uid://bx8ag0lrioqq7" path="res://src/scenes/animal.tscn" id="3_yufto"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18yd7"]
 content_margin_left = 10.0
@@ -34,8 +36,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.065100186, 0.22841346, 0.17731965, 1)
-
-[node name="GameManager" type="Node" parent="." unique_id=1430517050]
 
 [node name="UI" type="Control" parent="." unique_id=1534083287]
 layout_mode = 1
@@ -233,22 +233,18 @@ size_flags_horizontal = 3
 [node name="MarginContainer" type="MarginContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies" unique_id=1169715459]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer" unique_id=1102330874]
+[node name="EnemySlots" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer" unique_id=1102330874]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=1222555482]
-custom_minimum_size = Vector2(96, 96)
+[node name="Enemy" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer/EnemySlots" unique_id=955666644 instance=ExtResource("2_3rtjt")]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
-color = Color(0.88235295, 0.29411766, 0.29411766, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=1449602082]
-custom_minimum_size = Vector2(96, 96)
+[node name="Enemy2" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer/EnemySlots" unique_id=66161865 instance=ExtResource("2_3rtjt")]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
-color = Color(0.88235295, 0.29411766, 0.29411766, 1)
 
 [node name="Bottom" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=359915229]
 layout_mode = 2
@@ -297,12 +293,11 @@ color = Color(0.19215687, 1, 1, 1)
 
 [node name="Hand" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Bottom" unique_id=214724122]
 layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_covw0")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand" unique_id=325679927]
 layout_mode = 2
-size_flags_vertical = 4
 
 [node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer" unique_id=1420308910]
 layout_mode = 2
@@ -311,55 +306,22 @@ text = "Hand"
 
 [node name="Animals" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer" unique_id=283159130]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 6
-theme_override_constants/separation = 12
 
-[node name="ColorRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1679341812]
-custom_minimum_size = Vector2(96, 96)
+[node name="Animal" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1593937658 instance=ExtResource("3_yufto")]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-color = Color(0.9137255, 0.84705883, 0.7058824, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1877073943]
-custom_minimum_size = Vector2(96, 96)
+[node name="Animal2" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1054411323 instance=ExtResource("3_yufto")]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-color = Color(0.9137255, 0.84705883, 0.7058824, 1)
 
-[node name="ColorRect3" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=80498237]
-custom_minimum_size = Vector2(96, 96)
+[node name="Animal3" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1891771603 instance=ExtResource("3_yufto")]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-color = Color(0.9137255, 0.84705883, 0.7058824, 1)
 
-[node name="ColorRect4" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1804750278]
-custom_minimum_size = Vector2(96, 96)
+[node name="Animal4" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1266055522 instance=ExtResource("3_yufto")]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-color = Color(0.9137255, 0.84705883, 0.7058824, 1)
 
-[node name="ColorRect5" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1748607579]
-custom_minimum_size = Vector2(96, 96)
+[node name="Animal5" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=104873502 instance=ExtResource("3_yufto")]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-color = Color(0.9137255, 0.84705883, 0.7058824, 1)
 
-[node name="ColorRect6" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=659656953]
-custom_minimum_size = Vector2(96, 96)
+[node name="Animal6" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=2085318236 instance=ExtResource("3_yufto")]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-color = Color(0.9137255, 0.84705883, 0.7058824, 1)
-
-[node name="ColorRect7" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1802626460]
-custom_minimum_size = Vector2(96, 96)
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-color = Color(0.9137255, 0.84705883, 0.7058824, 1)

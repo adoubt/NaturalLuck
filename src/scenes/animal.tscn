@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bx8ag0lrioqq7"]
+
+[ext_resource type="Texture2D" uid="uid://413cunp6jdug" path="res://icon.svg" id="1_l3y21"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wtwr2"]
+radius = 59.15
+
+[node name="Animal" type="Control" unique_id=1593937658]
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1297011832]
+texture = ExtResource("1_l3y21")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=218198604]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=43044990]
+shape = SubResource("CircleShape2D_wtwr2")

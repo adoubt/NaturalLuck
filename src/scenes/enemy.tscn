@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bbxlpgv2jb6uc"]
+
+[ext_resource type="Texture2D" uid="uid://413cunp6jdug" path="res://icon.svg" id="1_e1bd7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3rtjt"]
+radius = 60.920223
+
+[node name="Enemy" type="Control" unique_id=955666644]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1925621159]
+modulate = Color(0.85490197, 0, 0, 1)
+texture = ExtResource("1_e1bd7")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2035676289]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=44552235]
+shape = SubResource("CircleShape2D_3rtjt")
