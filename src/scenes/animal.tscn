@@ -1,20 +1,40 @@
 [gd_scene format=3 uid="uid://bx8ag0lrioqq7"]
 
 [ext_resource type="Texture2D" uid="uid://413cunp6jdug" path="res://icon.svg" id="1_l3y21"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_wtwr2"]
-radius = 59.15
+[ext_resource type="Script" uid="uid://dsvfo72ug3bpl" path="res://src/scripts/data/Animal.gd" id="1_wtwr2"]
 
 [node name="Animal" type="Control" unique_id=1593937658]
 layout_mode = 3
 anchors_preset = 0
+offset_left = -62.32
+offset_top = -62.95
+offset_right = 64.68
+offset_bottom = 65.05
 size_flags_horizontal = 6
-size_flags_vertical = 4
+size_flags_vertical = 6
+script = ExtResource("1_wtwr2")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1297011832]
+[node name="Visual" type="Control" parent="." unique_id=701437092]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Visual" unique_id=1702347321]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("1_l3y21")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=218198604]
+position = Vector2(61.23, 60.185)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=43044990]
-shape = SubResource("CircleShape2D_wtwr2")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=114350500]
+polygon = PackedVector2Array(73.09, -48.235, 73.09, 55.765, 64.09, 72.765, -53.91, 70.765, -65.91, 56.765, -66.91, -53.235, -50.91, -66.235, 58.09, -66.235)

@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://bbxlpgv2jb6uc"]
 
+[ext_resource type="Script" uid="uid://bo6j5u2mxy1p6" path="res://src/scripts/data/Enemy.gd" id="1_43hrp"]
 [ext_resource type="Texture2D" uid="uid://413cunp6jdug" path="res://icon.svg" id="1_e1bd7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3rtjt"]
@@ -8,8 +9,16 @@ radius = 60.920223
 [node name="Enemy" type="Control" unique_id=955666644]
 layout_mode = 3
 anchors_preset = 0
+size_flags_horizontal = 6
+size_flags_vertical = 4
+script = ExtResource("1_43hrp")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1925621159]
+[node name="Visual" type="Control" parent="." unique_id=562585537]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual" unique_id=1925621159]
 modulate = Color(0.85490197, 0, 0, 1)
 texture = ExtResource("1_e1bd7")
 

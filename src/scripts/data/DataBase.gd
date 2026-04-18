@@ -3,7 +3,7 @@ class_name DataBase
 
 var enemy_configs = {
 	0: {
-		"scene": "",
+		"icon": "res://icon.svg",
 		"rate": 50.0,
 		"payout": 1.0,
 		"abilities":[]
@@ -14,17 +14,24 @@ var animal_configs = {
 	0: {
 		"name": "name",
 		"description": "description",
-		"scene":"",
-		"balance": 1.0,
+		"icon":"res://icon.svg",
+		"balance": 0.0,
 		"abilities":[]
 		},
 		}
+var hint_configs = {
+	0: {
+		"name": "name",
+		"description": "Second Enemy x2 Profit",
+		"abilities":[]
+		},
 		
+}
 var relic_configs = {
 	0: {
 		"name": "name",
 		"description": "description",
-		"scene":"",
+		"icon":"res://icon.svg",
 		"abilities":[]
 		},
 		}
@@ -32,7 +39,7 @@ var consumable_configs = {
 	0: {
 		"name": "name",
 		"description": "description",
-		"scene":"",
+		"icon":"res://icon.svg",
 		"abilities":[]
 		},
 	}

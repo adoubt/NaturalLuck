@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://d2kgbmbjjrawi"]
 
 [ext_resource type="Script" uid="uid://0qwd1ck0jbud" path="res://src/scripts/game/game.gd" id="1_qfxj7"]
-[ext_resource type="Script" uid="uid://bxgch8ha7k66r" path="res://src/scripts/game/animal_slots.gd" id="2_covw0"]
-[ext_resource type="Script" uid="uid://dip7ws6msretw" path="res://src/scripts/game/hand_slots.gd" id="3_3rtjt"]
+[ext_resource type="PackedScene" uid="uid://bx8ag0lrioqq7" path="res://src/scenes/animal.tscn" id="3_yufto"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18yd7"]
 content_margin_left = 10.0
@@ -19,7 +18,7 @@ bg_color = Color(0.2901961, 0.21568628, 0.15686275, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_covw0"]
 bg_color = Color(0.2901961, 0.21568628, 0.15686275, 1)
 
-[node name="Game" type="Control" unique_id=1381284959 groups=["game"]]
+[node name="Game" type="Control" unique_id=1381284959]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,7 +34,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 color = Color(0.065100186, 0.22841346, 0.17731965, 1)
 
 [node name="UI" type="Control" parent="." unique_id=1534083287]
@@ -45,7 +43,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=2043296026]
 layout_mode = 1
@@ -54,7 +51,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
@@ -62,8 +58,7 @@ theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer" unique_id=1864848530]
 layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 22
+theme_override_constants/separation = 69
 
 [node name="Top" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=1979872885]
 layout_mode = 2
@@ -87,22 +82,15 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer" unique_id=1569244436]
 layout_mode = 2
-theme_override_constants/separation = -54
+size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer" unique_id=251139193]
 layout_mode = 2
-size_flags_horizontal = 6
 text = "$"
 
-[node name="Balance" type="RichTextLabel" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer" unique_id=1343914762]
-unique_name_in_owner = true
+[node name="Label2" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer" unique_id=273275512]
 layout_mode = 2
-size_flags_horizontal = 3
-bbcode_enabled = true
 text = "100"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="HBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=244874244]
 layout_mode = 2
@@ -182,17 +170,7 @@ size_flags_horizontal = 2
 size_flags_vertical = 4
 color = Color(0.21176471, 0.050980393, 0.41960785, 1)
 
-[node name="Tutorial" type="RichTextLabel" parent="UI/MarginContainer/VBoxContainer" unique_id=1049623719]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_vertical = 4
-bbcode_enabled = true
-scroll_active = false
-horizontal_alignment = 1
-
 [node name="Field" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=1311333006]
-unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -201,20 +179,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ChosenAnimalSlots" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=1920303649]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="AnimalsField" type="MarginContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots" unique_id=1135844122]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots" unique_id=1135844122]
 layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 10
-script = ExtResource("2_covw0")
+theme_override_constants/margin_left = 91
+theme_override_constants/margin_right = 74
 
-[node name="AnimalSlots" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots/AnimalsField" unique_id=1691455474]
-unique_name_in_owner = true
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots/MarginContainer" unique_id=1691455474]
 layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots/MarginContainer/HBoxContainer" unique_id=1051586123]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots/MarginContainer/HBoxContainer" unique_id=254442988]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
 
 [node name="PanelContainer" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=1846603371]
 layout_mode = 2
@@ -229,10 +218,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 text = "DEPOSIT"
-
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=595499024]
-layout_mode = 2
-text = "1$"
 
 [node name="DepositRatio" type="HSlider" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1106536526]
 unique_name_in_owner = true
@@ -314,23 +299,37 @@ color = Color(0.19215687, 1, 1, 1)
 [node name="Hand" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Bottom" unique_id=214724122]
 layout_mode = 2
 size_flags_horizontal = 3
-mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_covw0")
 
-[node name="Hand" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand" unique_id=325679927]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand" unique_id=325679927]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/Hand" unique_id=1420308910]
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer" unique_id=1420308910]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Hand"
 
-[node name="HandSlots" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/Hand" unique_id=283159130]
-unique_name_in_owner = true
+[node name="HandSlots" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer" unique_id=283159130]
 layout_mode = 2
-size_flags_vertical = 3
-script = ExtResource("3_3rtjt")
+size_flags_vertical = 6
+
+[node name="Animal" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/HandSlots" unique_id=1593937658 instance=ExtResource("3_yufto")]
+layout_mode = 2
+
+[node name="Animal2" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/HandSlots" unique_id=1054411323 instance=ExtResource("3_yufto")]
+layout_mode = 2
+
+[node name="Animal3" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/HandSlots" unique_id=1891771603 instance=ExtResource("3_yufto")]
+layout_mode = 2
+
+[node name="Animal4" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/HandSlots" unique_id=1266055522 instance=ExtResource("3_yufto")]
+layout_mode = 2
+
+[node name="Animal5" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/HandSlots" unique_id=104873502 instance=ExtResource("3_yufto")]
+layout_mode = 2
+
+[node name="Animal6" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/HandSlots" unique_id=2085318236 instance=ExtResource("3_yufto")]
+layout_mode = 2
 
 [connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/DepositRatio" to="." method="_on_h_slider_value_changed"]
 [connection signal="pressed" from="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/Next" to="." method="_on_next_pressed"]
