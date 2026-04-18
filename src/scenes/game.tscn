@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://d2kgbmbjjrawi"]
 
+[ext_resource type="Script" uid="uid://0qwd1ck0jbud" path="res://src/scripts/game/game.gd" id="1_qfxj7"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18yd7"]
 content_margin_left = 10.0
 content_margin_bottom = 10.0
@@ -22,6 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_qfxj7")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=2061227521]
 layout_mode = 1
