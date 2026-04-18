@@ -1,0 +1,362 @@
+[gd_scene format=3 uid="uid://d2kgbmbjjrawi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18yd7"]
+content_margin_left = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfxj7"]
+content_margin_left = 10.0
+content_margin_top = 20.0
+content_margin_right = 10.0
+content_margin_bottom = 20.0
+bg_color = Color(0.2901961, 0.21568628, 0.15686275, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_covw0"]
+bg_color = Color(0.2901961, 0.21568628, 0.15686275, 1)
+
+[node name="Game" type="Control" unique_id=1381284959]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2061227521]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.065100186, 0.22841346, 0.17731965, 1)
+
+[node name="GameManager" type="Node" parent="." unique_id=1430517050]
+
+[node name="UI" type="Control" parent="." unique_id=1534083287]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=2043296026]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer" unique_id=1864848530]
+layout_mode = 2
+theme_override_constants/separation = 69
+
+[node name="Top" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=1979872885]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top" unique_id=592878939]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer" unique_id=1230367903]
+layout_mode = 2
+
+[node name="Info" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=1387917772]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info" unique_id=736629913]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer" unique_id=1569244436]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer" unique_id=251139193]
+layout_mode = 2
+text = "$"
+
+[node name="Label2" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer" unique_id=273275512]
+layout_mode = 2
+text = "100"
+
+[node name="HBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=244874244]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="RoundLabel" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=82529250]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Round 1"
+
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=685425040]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Goal: $10,000 by Round 3"
+
+[node name="Control" type="Control" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=1262378406]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control" unique_id=530956474]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.14509805, 1, 0, 0.26666668)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control" unique_id=1608354180]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -91.0
+offset_top = -25.0
+offset_right = 91.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control/VBoxContainer" unique_id=1698013234]
+layout_mode = 2
+text = "Signals"
+
+[node name="Label2" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control/VBoxContainer" unique_id=1993916391]
+layout_mode = 2
+text = "Second Enemy x2 Profit"
+
+[node name="Relics" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer" unique_id=1986716006]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_18yd7")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics" unique_id=1101069931]
+layout_mode = 2
+
+[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=1707533817]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+color = Color(0.21176471, 0.050980393, 0.41960785, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=279531045]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+color = Color(0.21176471, 0.050980393, 0.41960785, 1)
+
+[node name="ColorRect6" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=1011080623]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+color = Color(0.21176471, 0.050980393, 0.41960785, 1)
+
+[node name="Field" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=1311333006]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field" unique_id=1602818644]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Animals" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=1920303649]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Animals" unique_id=1135844122]
+layout_mode = 2
+theme_override_constants/margin_left = 91
+theme_override_constants/margin_right = 74
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Animals/MarginContainer" unique_id=1691455474]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Animals/MarginContainer/HBoxContainer" unique_id=1051586123]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Animals/MarginContainer/HBoxContainer" unique_id=254442988]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=1846603371]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.41
+theme_override_styles/panel = SubResource("StyleBoxFlat_qfxj7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer" unique_id=151900132]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=706650096]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "DEPOSIT"
+
+[node name="HSlider" type="HSlider" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1106536526]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=479865839]
+layout_mode = 2
+text = "GO"
+
+[node name="Enemies" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=2085829246]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies" unique_id=1169715459]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer" unique_id=1102330874]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=1222555482]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.88235295, 0.29411766, 0.29411766, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=1449602082]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.88235295, 0.29411766, 0.29411766, 1)
+
+[node name="Bottom" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=359915229]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Consumables" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Bottom" unique_id=599799792]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_stretch_ratio = 0.3
+theme_override_styles/panel = SubResource("StyleBoxFlat_covw0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables" unique_id=555031008]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer" unique_id=1714177640]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Consumables"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer" unique_id=674063807]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 12
+
+[node name="ColorRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=1626681866]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.19215687, 1, 1, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=1647687333]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.19215687, 1, 1, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=204663297]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.19215687, 1, 1, 1)
+
+[node name="Hand" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Bottom" unique_id=214724122]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_covw0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand" unique_id=325679927]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer" unique_id=1420308910]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Hand"
+
+[node name="Animals" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer" unique_id=283159130]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 12
+
+[node name="ColorRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1679341812]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1877073943]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=80498237]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="ColorRect4" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1804750278]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="ColorRect5" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1748607579]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="ColorRect6" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=659656953]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
+
+[node name="ColorRect7" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/VBoxContainer/Animals" unique_id=1802626460]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+color = Color(0.9137255, 0.84705883, 0.7058824, 1)
