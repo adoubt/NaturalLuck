@@ -12,19 +12,44 @@ var enemy_configs = {
 		
 var animal_configs = {
 	0: {
-		"name": "name",
+		"name": "cat",
 		"description": "description",
-		"icon":"res://icon.svg",
+		"icon_idle":"res://src/assets/icons/cat_idle.png",
+		"icon_happy":"res://src/assets/icons/cat_idle.png",
+		"icon_sad":"res://src/assets/icons/cat_idle.png",
 		"balance": 0.0,
 		"abilities":[]
 		},
-		}
+	1: {
+		"name": "hedgehod",
+		"description": "description",
+		"icon_idle":"res://src/assets/icons/hedgehog_idle.png",
+		"icon_happy":"res://src/assets/icons/hedgehog_happy.png",
+		"icon_sad":"res://src/assets/icons/hedgehog_sad.png",
+		"balance": 0.0,
+		"abilities":[]
+		},
+	2: {
+		"name": "fox",
+		"description": "description",
+		"icon_idle":"res://src/assets/icons/fox_idle.png",
+		"icon_happy":"res://src/assets/icons/fox_idle.png",
+		"icon_sad":"res://src/assets/icons/fox_idle.png",
+		"balance": 0.0,
+		"abilities":[]
+		},
+	}
 var hint_configs = {
 	0: {
 		"name": "name",
 		"description": "Second Enemy x2 Profit",
 		"abilities":[]
 		},
+	1: {
+	"name": "name",
+	"description": "Second Enemy x2 Profit",
+	"abilities":[]
+	},
 		
 }
 var relic_configs = {

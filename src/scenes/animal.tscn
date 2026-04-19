@@ -3,6 +3,16 @@
 [ext_resource type="Texture2D" uid="uid://413cunp6jdug" path="res://icon.svg" id="1_l3y21"]
 [ext_resource type="Script" uid="uid://dsvfo72ug3bpl" path="res://src/scripts/data/Animal.gd" id="1_wtwr2"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wtwr2"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 147
+corner_radius_top_right = 101
+corner_radius_bottom_right = 64
+corner_radius_bottom_left = 60
+shadow_color = Color(0, 0, 0, 0.24313726)
+shadow_size = 49
+shadow_offset = Vector2(0, 78.96)
+
 [node name="Animal" type="Control" unique_id=1593937658]
 layout_mode = 3
 anchors_preset = 0
@@ -12,6 +22,7 @@ offset_right = 64.68
 offset_bottom = 65.05
 size_flags_horizontal = 6
 size_flags_vertical = 6
+mouse_filter = 2
 script = ExtResource("1_wtwr2")
 
 [node name="Visual" type="Control" parent="." unique_id=701437092]
@@ -23,15 +34,54 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="Visual" unique_id=1702347321]
+[node name="Panel" type="Panel" parent="Visual" unique_id=439270245]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.475, 0.475)
+pivot_offset = Vector2(62.615, 62.575)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wtwr2")
+
+[node name="TextureRect" type="TextureRect" parent="Visual" unique_id=1702347321]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("1_l3y21")
+
+[node name="AnimalBalance" type="RichTextLabel" parent="." unique_id=1997524590]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0001296997
+offset_bottom = -3.0517578e-05
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeltaLayer" type="Control" parent="." unique_id=1974266421]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -0.00012207031
+offset_bottom = -1.5258789e-05
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="Area2D" type="Area2D" parent="." unique_id=218198604]
 position = Vector2(61.23, 60.185)

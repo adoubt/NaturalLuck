@@ -3,21 +3,68 @@
 [ext_resource type="Script" uid="uid://0qwd1ck0jbud" path="res://src/scripts/game/game.gd" id="1_qfxj7"]
 [ext_resource type="Script" uid="uid://bxgch8ha7k66r" path="res://src/scripts/game/animal_slots.gd" id="2_covw0"]
 [ext_resource type="Script" uid="uid://dip7ws6msretw" path="res://src/scripts/game/hand_slots.gd" id="3_3rtjt"]
+[ext_resource type="Shader" uid="uid://d02dylgis6qel" path="res://src/assets/shaders/PostProcess/Vignette.gdshader" id="4_276xm"]
+[ext_resource type="Shader" uid="uid://ewaah2n7mbad" path="res://src/assets/shaders/PostProcess/Film.gdshader" id="5_276xm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_18yd7"]
 content_margin_left = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_276xm"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+skew = Vector2(0.095, 0)
+corner_radius_top_left = 155
+corner_radius_top_right = 93
+corner_radius_bottom_right = 180
+corner_radius_bottom_left = 93
+shadow_color = Color(0.2901961, 0.21568628, 0.15686275, 0.6666667)
+shadow_size = 85
+shadow_offset = Vector2(-0.865, 0)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qfxj7"]
 content_margin_left = 10.0
 content_margin_top = 20.0
 content_margin_right = 10.0
 content_margin_bottom = 20.0
-bg_color = Color(0.2901961, 0.21568628, 0.15686275, 1)
+bg_color = Color(0.2901961, 0.21568628, 0.15686275, 0)
+corner_radius_top_left = 37
+corner_radius_top_right = 57
+corner_radius_bottom_right = 52
+corner_radius_bottom_left = 52
+shadow_color = Color(0, 0, 0, 0.34901962)
+shadow_size = 130
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcg6w"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 89
+corner_radius_top_right = 75
+corner_radius_bottom_right = 120
+corner_radius_bottom_left = 177
+shadow_color = Color(0.8901961, 0, 0, 0.3137255)
+shadow_size = 52
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_covw0"]
-bg_color = Color(0.2901961, 0.21568628, 0.15686275, 1)
+bg_color = Color(0.2901961, 0.21568628, 0.15686275, 0)
+corner_radius_top_left = 152
+corner_radius_top_right = 187
+corner_radius_bottom_right = 78
+corner_radius_bottom_left = 67
+shadow_color = Color(0.2901961, 0.21568628, 0.15686275, 0.57254905)
+shadow_size = 36
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gh3at"]
+shader = ExtResource("4_276xm")
+shader_parameter/alpha = 0.44
+shader_parameter/inner_radius = 0.0
+shader_parameter/outer_radius = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_flib5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lcg6w"]
+shader = ExtResource("5_276xm")
+shader_parameter/grain_amount = 0.05
+shader_parameter/grain_size = 1.0
 
 [node name="Game" type="Control" unique_id=1381284959 groups=["game"]]
 layout_mode = 3
@@ -38,8 +85,10 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.065100186, 0.22841346, 0.17731965, 1)
 
-[node name="UI" type="Control" parent="." unique_id=1534083287]
-layout_mode = 1
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=564152258]
+
+[node name="UI" type="Control" parent="CanvasLayer" unique_id=1534083287]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -47,7 +96,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=2043296026]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI" unique_id=2043296026]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,43 +109,49 @@ theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer" unique_id=1864848530]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer" unique_id=1864848530]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 22
 
-[node name="Top" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=1979872885]
+[node name="Top" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer" unique_id=1979872885]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top" unique_id=592878939]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top" unique_id=592878939]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer" unique_id=1230367903]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer" unique_id=1230367903]
 layout_mode = 2
 
-[node name="Info" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=1387917772]
+[node name="Info" type="PanelContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=1387917772]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 6
-size_flags_vertical = 0
+size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info" unique_id=736629913]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info" unique_id=736629913]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer" unique_id=1569244436]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer" unique_id=1569244436]
 layout_mode = 2
 theme_override_constants/separation = -54
 
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer" unique_id=251139193]
+[node name="BalanceHolder" type="Control" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer" unique_id=890675462]
 layout_mode = 2
-size_flags_horizontal = 6
-text = "$"
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="Balance" type="RichTextLabel" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer" unique_id=1343914762]
+[node name="Balance" type="RichTextLabel" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer/BalanceHolder" unique_id=1343914762]
 unique_name_in_owner = true
-layout_mode = 2
+custom_minimum_size = Vector2(48.3, 28.045)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
 text = "100"
@@ -104,25 +159,34 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=244874244]
+[node name="BalanceDeltaLayer" type="Control" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Info/VBoxContainer/HBoxContainer/BalanceHolder" unique_id=811211910]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_right = 100.0
+offset_bottom = 100.0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=244874244]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="RoundLabel" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=82529250]
+[node name="RoundLabel" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=82529250]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Round 1"
 
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=685425040]
+[node name="GoalLabel" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=685425040]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Goal: $10,000 by Round 3"
+text = "Goal: $200 by Round 3"
 
-[node name="Control" type="Control" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=1262378406]
+[node name="Control" type="Control" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer" unique_id=1262378406]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control" unique_id=530956474]
+[node name="TextureRect" type="ColorRect" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control" unique_id=530956474]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -131,7 +195,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.14509805, 1, 0, 0.26666668)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control" unique_id=1608354180]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control" unique_id=1608354180]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -145,44 +209,44 @@ offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control/VBoxContainer" unique_id=1698013234]
+[node name="Label" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control/VBoxContainer" unique_id=1698013234]
 layout_mode = 2
 text = "Signals"
 
-[node name="HintSlots" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control/VBoxContainer" unique_id=1777830935]
+[node name="HintSlots" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control/VBoxContainer" unique_id=1777830935]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Relics" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer" unique_id=1986716006]
+[node name="Relics" type="PanelContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer" unique_id=1986716006]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_18yd7")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics" unique_id=1101069931]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics" unique_id=1101069931]
 layout_mode = 2
 
-[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=1707533817]
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=1707533817]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
 color = Color(0.21176471, 0.050980393, 0.41960785, 1)
 
-[node name="ColorRect5" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=279531045]
+[node name="ColorRect5" type="ColorRect" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=279531045]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
 color = Color(0.21176471, 0.050980393, 0.41960785, 1)
 
-[node name="ColorRect6" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=1011080623]
+[node name="ColorRect6" type="ColorRect" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/Relics/HBoxContainer" unique_id=1011080623]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
 color = Color(0.21176471, 0.050980393, 0.41960785, 1)
 
-[node name="Tutorial" type="RichTextLabel" parent="UI/MarginContainer/VBoxContainer" unique_id=1049623719]
+[node name="Tutorial" type="RichTextLabel" parent="CanvasLayer/UI/MarginContainer/VBoxContainer" unique_id=1049623719]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -191,20 +255,21 @@ bbcode_enabled = true
 scroll_active = false
 horizontal_alignment = 1
 
-[node name="Field" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=1311333006]
+[node name="Field" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer" unique_id=1311333006]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field" unique_id=1602818644]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field" unique_id=1602818644]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ChosenAnimalSlots" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=1920303649]
+[node name="ChosenAnimalSlots" type="PanelContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=1920303649]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_276xm")
 
-[node name="AnimalsField" type="MarginContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots" unique_id=1135844122]
+[node name="AnimalsField" type="MarginContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots" unique_id=1135844122]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_left = 16
@@ -212,125 +277,206 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 10
 script = ExtResource("2_covw0")
 
-[node name="AnimalSlots" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots/AnimalsField" unique_id=1691455474]
+[node name="AnimalSlots" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/ChosenAnimalSlots/AnimalsField" unique_id=1691455474]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=1846603371]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=1846603371]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.41
 theme_override_styles/panel = SubResource("StyleBoxFlat_qfxj7")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer" unique_id=151900132]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer" unique_id=151900132]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=706650096]
+[node name="Label" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=706650096]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(5.6072327e-06, 0.59838843, 3.85046e-07, 1)
 text = "DEPOSIT"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=595499024]
+[node name="Control" type="Control" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1076900492]
+z_index = 1
 layout_mode = 2
-text = "1$"
+mouse_filter = 2
 
-[node name="DepositRatio" type="HSlider" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1106536526]
+[node name="DepositSize" type="RichTextLabel" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/Control" unique_id=595499024]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 0
+offset_left = -133.0
+offset_top = -79.0
+offset_right = 300.0
+offset_bottom = 304.0
+size_flags_horizontal = 3
+mouse_filter = 2
+bbcode_enabled = true
+text = "1$"
+horizontal_alignment = 1
+
+[node name="DepositRatio" type="HSlider" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1106536526]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = 1.0
-value = 1.0
-rounded = true
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 0.09999999999999999
+ticks_on_borders = true
 
-[node name="Battle" type="Button" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=479865839]
+[node name="Battle" type="Button" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=479865839]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
-text = "GO"
+text = "DEPOSIT"
 
-[node name="Next" type="Button" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1016647933]
+[node name="Repeat" type="Button" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=601892128]
 unique_name_in_owner = true
 layout_mode = 2
+text = "REPEAT"
 
-[node name="Stage" type="Label" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1225277461]
+[node name="Next" type="Button" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1016647933]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
-[node name="Enemies" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=2085829246]
+[node name="Stage" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1225277461]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Enemies" type="PanelContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer" unique_id=2085829246]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_lcg6w")
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies" unique_id=1169715459]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies" unique_id=1169715459]
 layout_mode = 2
 
-[node name="EnemySlots" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer" unique_id=1102330874]
+[node name="EnemySlots" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/Enemies/MarginContainer" unique_id=1102330874]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Bottom" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer" unique_id=359915229]
+[node name="Bottom" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer" unique_id=359915229]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 33
 
-[node name="Consumables" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Bottom" unique_id=599799792]
+[node name="Consumables" type="PanelContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom" unique_id=599799792]
+custom_minimum_size = Vector2(170, 150)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_stretch_ratio = 0.3
 theme_override_styles/panel = SubResource("StyleBoxFlat_covw0")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables" unique_id=555031008]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Consumables" unique_id=555031008]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer" unique_id=1714177640]
+[node name="Label" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer" unique_id=1714177640]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Consumables"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer" unique_id=674063807]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer" unique_id=674063807]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_override_constants/separation = 12
 
-[node name="ColorRect" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=1626681866]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=1626681866]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 color = Color(0.19215687, 1, 1, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=1647687333]
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=1647687333]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 color = Color(0.19215687, 1, 1, 1)
 
-[node name="ColorRect3" type="ColorRect" parent="UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=204663297]
+[node name="ColorRect3" type="ColorRect" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Consumables/VBoxContainer/HBoxContainer" unique_id=204663297]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 color = Color(0.19215687, 1, 1, 1)
 
-[node name="Hand" type="PanelContainer" parent="UI/MarginContainer/VBoxContainer/Bottom" unique_id=214724122]
+[node name="Hand" type="PanelContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom" unique_id=214724122]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_covw0")
 
-[node name="Hand" type="VBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand" unique_id=325679927]
+[node name="Hand" type="VBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Hand" unique_id=325679927]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/Hand" unique_id=1420308910]
+[node name="Label" type="Label" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Hand/Hand" unique_id=1420308910]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Hand"
 
-[node name="HandSlots" type="HBoxContainer" parent="UI/MarginContainer/VBoxContainer/Bottom/Hand/Hand" unique_id=283159130]
+[node name="HandSlots" type="HBoxContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Bottom/Hand/Hand" unique_id=283159130]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_3rtjt")
 
-[connection signal="value_changed" from="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/DepositRatio" to="." method="_on_h_slider_value_changed"]
-[connection signal="pressed" from="UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/Next" to="." method="_on_next_pressed"]
+[node name="FXLayer" type="Control" parent="CanvasLayer/UI" unique_id=149981220]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=334014193]
+
+[node name="ColorRect" type="TextureRect" parent="CanvasLayer2" unique_id=631976014]
+visible = false
+material = SubResource("ShaderMaterial_gh3at")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+texture = SubResource("NoiseTexture2D_flib5")
+
+[node name="ColorRect2" type="TextureRect" parent="CanvasLayer2" unique_id=519116417]
+visible = false
+material = SubResource("ShaderMaterial_lcg6w")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+texture = SubResource("NoiseTexture2D_flib5")
+
+[node name="RoundLight" type="DirectionalLight2D" parent="CanvasLayer2" unique_id=545740062]
+unique_name_in_owner = true
+visible = false
+color = Color(0.45492756, 0.6928252, 0.8720639, 1)
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="CanvasLayer2" unique_id=1013397174]
+visible = false
+blend_mode = 1
+
+[connection signal="value_changed" from="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/DepositRatio" to="." method="_on_h_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/Battle" to="." method="_on_battle_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/Repeat" to="." method="_on_repeat_pressed"]
+[connection signal="pressed" from="CanvasLayer/UI/MarginContainer/VBoxContainer/Field/HBoxContainer/PanelContainer/VBoxContainer/Next" to="." method="_on_next_pressed"]
