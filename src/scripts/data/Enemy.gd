@@ -3,7 +3,7 @@ class_name Enemy
 
 var id: int
 var icon_path: String
-var rate = 0.5
+var rate :float
 @onready var sprite = $Visual/Sprite2D
 @onready var visual = $Visual
 var tween

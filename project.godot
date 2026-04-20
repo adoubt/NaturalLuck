@@ -15,9 +15,18 @@ run/main_scene="uid://d2kgbmbjjrawi"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [global_group]
 
 game=""
+
+[gui]
+
+theme/custom_font="uid://c46g1g4gw44gs"
 
 [input]
 

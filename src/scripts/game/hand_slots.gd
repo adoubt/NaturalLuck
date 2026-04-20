@@ -1,5 +1,8 @@
-extends HBoxContainer
+extends GridContainer
 
+var game
+func i(_game: Node) -> void:
+	game= _game
 func _can_drop_data(_pos, data):
 	return data is Animal
 
@@ -12,5 +15,6 @@ func _drop_data(_pos, data):
 
 	data.reset_visual_state()
 
-	var game = get_tree().get_first_node_in_group("game")
+	
 	game.refresh_chosen_animals()
+	game.refresh_hand_animals()

@@ -10,11 +10,15 @@ var balance: float:
 
 		if delta != 0:
 			show_balance_delta(delta)
-		
-var relicts : Array[Relic]
+
+var game_data = {
+	"balance": 100,
+	"rounds": {}
+}
+var relics : Array[Relic]
 var consumables : Array[Consumable]
-var max_enemies:int =1
-var game_speed :float= 1
+var max_enemies:int = 2
+var game_speed :float= 2
 var chosen_animals: Array[Animal]
 var hand_animals: Array[Animal]
 var enemies:Array[Enemy]
@@ -23,6 +27,8 @@ var chosen_hints: Array[Hint]
 var hints: Array[Hint]
 var showed_hints:Array[Hint]
 var free_hints: int = 1
+var bonus_hints:Array=[]
+
 var goal:float = 150.0:
 	set(value):
 		goal = value
@@ -33,7 +39,8 @@ var current_round:int = 0:
 	set(value):
 		current_round = value
 		%RoundLabel.text = "Round "+ str(value)
-		
+var queue:Array[Animal]
+
 var deposit_ratio: float = 0.1
 var debt:float
 var enemy_instance: PackedScene = preload("res://src/scenes/enemy.tscn")
@@ -44,6 +51,7 @@ var db = DataBase.new()
 var tutorial_tween: Tween
 var tutorial_busy := false	
 var last_played:Array[Animal]
+var last_played_unit: int
 @onready var battle_button:= %Battle
 enum Stage {
 	ROUND_START,
@@ -63,7 +71,8 @@ func _ready() -> void:
 	update_balance()
 	await set_stage(Stage.ROUND_START)
 	hand_animals = await generate_hand(5)
-	
+	%AnimalsField.i(self)
+	%HandSlots.i(self)
 func next_stage():
 	match stage:
 		Stage.ROUND_START:
@@ -88,26 +97,26 @@ func set_stage(new_stage: Stage) -> void:
 		Stage.ROUND_START:
 			disable_battle_button()
 			await start_round()
-
+			save_game()
 		Stage.PLAYER_SELECT:
 			enable_hand_selection()
-
+			save_game()
 		Stage.PLAYER_READY:
 			enable_battle_button()
-
+			save_game()
 		Stage.BATTLE:
 			disable_battle_button()
 			await start_battle()
-
+			save_game()
 		Stage.REWARDS:
 			await calc_rewards()
-
+			save_game()
 		Stage.SHOP:
 			await open_shop()
-
+			save_game()
 		Stage.ROUND_END:
 			await finalize_round()
-
+			save_game()
 func start_round():
 	change_light()
 	current_round += 1
@@ -115,12 +124,14 @@ func start_round():
 	chosen_animals.clear()
 	#used_consumables.clear()
 	
-	
-	chosen_enemies = await generate_enemies(randf_range(1,max_enemies))
+	chosen_enemies = await generate_enemies(randf_range(1, max_enemies))
 	await wait_sec(0.4 / game_speed)
-	chosen_hints = generate_hints(3)
+	send_event(AbilityTriggers.Events.ROUND_STARTED, {})
+	
+	chosen_hints = await generate_hints(3)
 	
 	show_available_hints()
+	bonus_hints.clear()
 	await next_stage()
 	
 func enable_battle_button():
@@ -138,15 +149,15 @@ func disable_battle_button():
 	%DepositRatio.editable = false
 		
 func calc_rewards():
-	for animal in hand_animals:
+	await refresh_hand_animals()
+	var animals_to_process = hand_animals.duplicate()
+	for animal in animals_to_process:
 		if is_instance_valid(animal):
 			await money_back(animal)
 	await next_stage()
+	
 func generate_enemies(count: int) -> Array[Enemy]:
 	var result: Array[Enemy] = []
-
-	
-
 	var keys = db.enemy_configs.keys()
 
 	for i in range(count):
@@ -156,7 +167,7 @@ func generate_enemies(count: int) -> Array[Enemy]:
 		var new_enemy: Enemy = enemy_instance.instantiate()
 		new_enemy.id = id
 		new_enemy.icon_path = e_data["icon"]
-		
+		new_enemy.rate =  e_data["rate"]
 		new_enemy.hide()
 		%EnemySlots.add_child(new_enemy)
 
@@ -173,45 +184,64 @@ func generate_enemies(count: int) -> Array[Enemy]:
 	
 func generate_hints(count: int) -> Array[Hint]:
 	var result: Array[Hint] = []
+	
 
-	for child in %HintSlots.get_children():
-		child.queue_free()
+	for id in bonus_hints:
+		var new_hint = create_hint_logic(id)
+		
 
+		new_hint.visible = true 
+		
+		%HintSlots.add_child(new_hint)
+		new_hint.visible = true
+		result.append(new_hint)
+
+
+	
 	var keys = db.hint_configs.keys()
-
 	for i in range(count):
 		var id = keys[randi() % keys.size()]
-		var e_data = db.hint_configs[id]
-
-		var new_hint: Hint = hint_instance.instantiate()
-		new_hint.id = id
-		new_hint.description = e_data["description"]
-		new_hint.abilities = e_data["abilities"]
-
-		if i >= free_hints:
-			new_hint.visible = false
-		else:
-			new_hint.visible = true
+		var new_hint = create_hint_logic(id)
 		
+		
+		if i < free_hints:
+			new_hint.visible = true
+		else:
+			new_hint.visible = false
+			
 		%HintSlots.add_child(new_hint)
 		result.append(new_hint)
 
+	await save_game()
 	return result
+
+# Вспомогательная функция, чтобы не дублировать код настройки
+func create_hint_logic(id: int) -> Hint:
+	var e_data = db.hint_configs[id]
+	var inst: Hint = hint_instance.instantiate()
+	inst.id = id
+	inst.description = e_data["description"]
+	inst.abilities = e_data["abilities"]
+	return inst
 	
 func generate_hand(count: int) -> Array[Animal]:
 	var result: Array[Animal] = []
 
 	for child in %HandSlots.get_children():
 		child.queue_free()
-
+	
 	var keys = db.animal_configs.keys()
+	keys.shuffle()
+
+	count = min(count, keys.size())
 
 	for i in range(count):
-		var id = keys[randi() % keys.size()]
+		var id = keys[i]
 		var e_data = db.animal_configs[id]
 
 		var new_animal: Animal = animal_instance.instantiate()
 		new_animal.id = id
+		new_animal.animal_name = e_data["name"]
 		new_animal.icon_idle_path = e_data["icon_idle"]
 		new_animal.icon_happy_path = e_data["icon_happy"]
 		new_animal.icon_sad_path = e_data["icon_sad"]
@@ -220,60 +250,112 @@ func generate_hand(count: int) -> Array[Animal]:
 
 		new_animal.hide()
 		%HandSlots.add_child(new_animal)
-
+		
 		await get_tree().process_frame
-		new_animal.play_spawn()
 
-		await wait_sec(0.12/ game_speed)
+		if is_instance_valid(new_animal):
+			new_animal.play_spawn()
+
+		await wait_sec(0.12 / game_speed)
 
 		result.append(new_animal)
-
+	await refresh_hand_animals()
 	return result
 
 func show_available_hints():
 	for i in range(chosen_hints.size()):
-		chosen_hints[i].visible = i < free_hints
-
-
-func reveal_hint():
-	free_hints = min(free_hints + 1, chosen_hints.size())
-	show_available_hints()
+		chosen_hints[i].visible = i < free_hints + bonus_hints.size()
+	
+#
+#func reveal_hint():
+	#free_hints = min(free_hints + 1, chosen_hints.size())
+	#show_available_hints()
 	
 func open_shop():
 	pass
 	
 func run_battle() -> void:
+	
 	last_played = []
-	for animal in chosen_animals:
+	queue = chosen_animals.duplicate()
+	var ctx = {
+		"queue": queue,
+		"player_balance": balance,
+		"last_played": last_played
+	}
+	send_event(AbilityTriggers.Events.BATTLE_STARTED, ctx)
+
+	queue.reverse()
+
+	while queue.size() > 0:
+		var animal: Animal = queue.pop_front()
+
+		if animal == null:
+			continue
+
 		if animal.balance <= 0:
 			await wait_sec(0.3 / game_speed)
 			animal.move_to_container(%HandSlots)
-			chosen_animals.erase(animal)
 			continue
 
-		for enemy in chosen_enemies:
-			if animal.balance <= 0:
-				break
+		await run_enemy_chain(animal)
 
-			var target_global := get_attack_position(animal, enemy)
+		while animal.balance > 0 and animal.repeat_count > 0:
+			animal.repeat_count -= 1
+			await run_enemy_chain(animal)
 
-			await animal_move_to(animal, target_global, 0.35 / game_speed)
-			await wait_sec(0.15 / game_speed)
-
-			var win := roll_vs_rate(enemy.rate)
-
-			if win:
-				animal.update_balance(animal.balance)
-			else:
-				animal.update_balance(-animal.balance)
-
-			await wait_sec(0.45 / game_speed)
-		
-		#animal.move_to_container(%HandSlots)
 		animal.reset_visual_state()
-		animal.reparent(%HandSlots)
-		last_played.append(animal)
+
+		if animal.balance > 0 and animal.requeue_count > 0:
+			animal.requeue_count -= 1
+			queue.append(animal)
+			await animal_move_to(
+				animal,
+				%AnimalSlots.global_position,
+				0.3 / game_speed
+			)
+
+			
+		else:
+			await animal_move_to(
+				animal,
+				animal.global_position + Vector2(0, 100),
+				0.2 / game_speed
+			)
+
+			animal.reparent(%HandSlots)
+			last_played.append(animal)
+
 	await wait_sec(0.5 / game_speed)
+	queue.clear()
+	
+func run_enemy_chain(animal: Animal) -> void:
+	for enemy in chosen_enemies:
+
+		if animal.balance <= 0:
+			break
+
+		var target_global := get_attack_position(animal, enemy)
+
+		await animal_move_to(
+			animal,
+			target_global,
+			0.35 / game_speed
+		)
+
+		await wait_sec(0.15 / game_speed)
+
+		var win := roll_vs_rate(enemy.rate)
+		var ctx:= {"source":animal, "target": enemy}
+		if win:
+			send_event(AbilityTriggers.Events.ANIMAL_WIN,ctx)
+			animal.update_balance(animal.balance)
+		else:
+			send_event(AbilityTriggers.Events.ANIMAL_LOSS,ctx)
+			animal_lose_balance(animal)
+		
+		send_event(AbilityTriggers.Events.ENEMY_PASSED, ctx)
+		await wait_sec(0.45 / game_speed)
 
 func get_attack_position(animal: Animal, enemy: Enemy) -> Vector2:
 	return Vector2(
@@ -301,17 +383,20 @@ func animal_move_to(animal: Animal, target_global: Vector2, time: float) -> void
 var lose_streak := 0
 
 func roll_vs_rate(rate: float) -> bool:
-	var bonus := lose_streak * 0.08
-	var final_rate :float= clamp(rate + bonus, 0.0, 0.95)
+	if rate >= 1.0:
+		return true
 
-	var win :float= randf() <= final_rate
+	var bonus := lose_streak * 0.04
+	var final_rate :float= clamp(rate + bonus, 0.0, 0.99)
+
+	var win :bool= randf() <= final_rate
 
 	if win:
 		lose_streak = 0
 	else:
 		lose_streak += 1
 
-	return win					
+	return win				
 func start_battle():
 	await wait_sec(0.25 / game_speed)
 	await split_deposit()
@@ -321,17 +406,20 @@ func start_battle():
 	
 	
 func finalize_round():
+	save_game()
 	for child in %HintSlots.get_children():
 		child.queue_free()
 	for child in %EnemySlots.get_children():
 		child.queue_free()
 	for child in %AnimalSlots.get_children():
 		child.queue_free()
+		
 	await get_tree().process_frame
 	%Repeat.show()
 	await  set_stage(Stage.ROUND_START)
 	if current_round == round_goal:
 		check_goal()
+	
 func check_goal():
 	if _balance < goal:
 		get_tree().reload_current_scene()
@@ -383,6 +471,20 @@ func update_deposit_size() -> void:
 		"[/font_size][/wave][/center]"
 	)
 
+	var slider := %DepositRatio
+	var bubble := %DepositBubble
+
+	var t := inverse_lerp(
+		slider.min_value,
+		slider.max_value,
+		slider.value
+	)
+
+	var x :float= t * slider.size.x
+
+	bubble.position.x = slider.position.x + x - bubble.size.x * 0.5
+	bubble.position.y = slider.position.y - 10
+
 func _on_next_pressed() -> void:
 	await next_stage()
 func wait_sec(time: float) -> void:
@@ -399,9 +501,12 @@ func refresh_chosen_animals():
 		
 	if chosen_animals.size() >= 3 and (stage  in [Stage.PLAYER_SELECT, Stage.ROUND_START]) :
 		await set_stage(Stage.PLAYER_READY)		
-	
-		
 
+func refresh_hand_animals():
+	hand_animals.clear()
+	for child in %HandSlots.get_children():
+		if child is Animal:
+			hand_animals.append(child)
 
 func show_stage_text_tutorial() -> void:
 	#await wait_sec(1.4)
@@ -440,7 +545,7 @@ func update_balance() -> void:
 	%Balance.bbcode_enabled = true
 	%Balance.text = (
 		"[center][wave amp=3 freq=1.6]" +
-		"[color=#5dff7a]$%d[/color]" % int(_balance) +
+		"[color=#5dff7a]$%d[/color]" % round(_balance) +
 		"[/wave][/center]"
 	)
 	
@@ -509,12 +614,6 @@ func get_stage_text(stage: Stage) -> String:
 func _on_battle_pressed() -> void:
 	await set_stage(Stage.BATTLE)
 	
-func money_back(animal: Animal):
-	var amount = animal.balance
-	
-	animal.update_balance(-animal.balance, true)
-	balance+=amount
-	pass
 	
 func can_grab() -> bool:
 	return stage == Stage.ROUND_START or stage == Stage.PLAYER_SELECT or stage == Stage.PLAYER_READY
@@ -530,17 +629,18 @@ func repeat_last_played()->void:
 	chosen_animals.clear()
 	for animal in %AnimalSlots.get_children():
 		if is_instance_valid(animal):
+			animal_move_to(animal, animal.global_position+ Vector2(0,100), 0.3/game_speed)
 			animal.move_to_container(%HandSlots)
-
+			await refresh_hand_animals()
 	for animal in last_played:
 		if not is_instance_valid(animal):
 			continue
+		await animal_move_to(animal, %AnimalSlots.global_position,0.3/game_speed)
 		animal.move_to_container(%AnimalSlots)
 		chosen_animals.append(animal)
-
+		await refresh_chosen_animals()
 	await wait_sec(0.3 / game_speed)
 	await set_stage(Stage.BATTLE)
-
 
 
 func change_light() -> void:
@@ -562,3 +662,90 @@ func change_light() -> void:
 		 .set_trans(Tween.TRANS_SINE)\
 		 .set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(%RoundLight, "energy", randf_range(0.6, 1.1), 1.2)
+
+func save_game():
+	game_data["rounds"][current_round] = {
+		"hints": chosen_hints,
+		"relics": relics,
+		"deposit_percent": deposit_ratio,
+		"last_played":[last_played],
+		"last_played_unit": last_played_unit,
+	}
+
+func money_back(animal: Animal) -> void:
+	var ctx = {"target": animal, "amount": animal.balance}
+	await send_event(AbilityTriggers.Events.BEFORE_ANIMAL_CASHOUT, ctx)
+
+	animal.update_balance(-ctx["amount"]) 
+	balance += ctx["amount"]
+
+func animal_lose_balance(animal: Animal) -> void:
+	var ctx = {"target": animal, "amount": animal.balance}
+	send_event(AbilityTriggers.Events.BEFORE_ANIMAL_CASHOUT, ctx)
+	
+	
+	animal.update_balance(-ctx["amount"])
+
+func send_event(event_type: int, ctx: Dictionary) -> void:
+	
+	var observers = []
+	observers.append_array(chosen_animals)
+	observers.append_array(relics)
+	
+	for animal in observers:
+		for ab_id in animal.abilities:
+			var ab = db.animal_abilities[ab_id]
+			
+			if ab.trigger == event_type:
+				if is_target_valid(animal, ab, ctx):
+					execute_ability(ab, animal, ctx)
+
+
+func is_target_valid(owner: Animal, ab: Dictionary, ctx: Dictionary) -> bool:
+	match ab.target:
+		AbilityTriggers.Targets.ANIMAL:
+			
+			return owner == ctx.get("target")
+		AbilityTriggers.Targets.ENEMY:
+			
+			return owner == ctx.get("source")
+		#AbilityTriggers.Targets.NEXT_ANIMAL:
+			
+			#return is_next_after_me(owner, ctx.get("target"))
+			
+		AbilityTriggers.Targets.SELF:
+			
+			return true
+		AbilityTriggers.Targets.GAME:	
+			return true
+		AbilityTriggers.Targets.NEXT_ANIMAL:
+			return queue.size()>0
+	return false		
+
+func execute_ability(ab: Dictionary, source: Animal, ctx: Dictionary) -> void:
+	
+	match ab.action:
+		
+		AbilityTriggers.Actions.KEEP_PERCENT:
+			if ctx.get("target") == source:
+				if ctx.has("amount"):
+					ctx["amount"] *= (1.0 - ab.value)
+					
+		AbilityTriggers.Actions.SHARE_PERCENT:
+			var next_animal = queue.front()
+			
+			
+			next_animal.update_balance(source.balance * ab.value)
+			
+		AbilityTriggers.Actions.ADD_REQUEUE:
+			source.requeue_count += ab.value
+			
+		AbilityTriggers.Actions.SHOW_LAST_SIGNAL:
+			var first_hint_id = chosen_hints[0].id
+			bonus_hints.append(first_hint_id)
+			
+		AbilityTriggers.Actions.INCREASE_RATE:
+			var enemy :Enemy = ctx["target"]
+			enemy.rate+=10
+		
+	

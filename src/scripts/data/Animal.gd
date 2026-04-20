@@ -3,20 +3,21 @@ class_name Animal
 
 var abilities: Array = []
 var balance: float = 0.0
-	
+var repeat_count = 0
+var requeue_count = 0
 var id: int
 var description: String = ""
 var icon_idle_path: String = ""
 var icon_happy_path: String = ""
 var icon_sad_path: String = ""
-
+var animal_name: String
 @onready var balance_label: RichTextLabel = $AnimalBalance
 @onready var delta_layer: Control = $DeltaLayer
 @onready var visual: Control = $Visual
 @onready var texture_rect: TextureRect = $Visual/TextureRect
 @export var max_scale: float = 1.1     
-@export var min_scale: float = 0.5   
-  
+@export var min_scale: float = 0.5
+
 var balance_float_tween: Tween
 
 func _process(_delta: float) -> void:
@@ -263,7 +264,10 @@ func _can_drop_data(_pos, data):
 	if not get_parent():
 		return false
 	elif get_parent().name == "AnimalSlots":
-		return data is Animal and get_parent().get_child_count() < 3
+		var count = get_parent().get_child_count()
+		if data in get_parent().get_children():
+			count-=1
+		return data is Animal and count < 3
 	elif get_parent().name == "HandSlots":
 		return data is Animal
 		
@@ -281,3 +285,4 @@ func _drop_data(_pos, data):
 
 	var game = get_tree().get_first_node_in_group("game")
 	game.refresh_chosen_animals()
+	game.refresh_hand_animals()
