@@ -4,7 +4,8 @@ class_name Enemy
 var id: int
 var icon_path: String
 var rate :float
-@onready var sprite = $Visual/Sprite2D
+var payout:float
+@onready var sprite = $Visual/TextureRect
 @onready var visual = $Visual
 var tween
 

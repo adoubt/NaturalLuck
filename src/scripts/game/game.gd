@@ -18,7 +18,7 @@ var game_data = {
 var relics : Array[Relic]
 var consumables : Array[Consumable]
 var max_enemies:int = 2
-var game_speed :float= 2
+var game_speed :float= 1
 var chosen_animals: Array[Animal]
 var hand_animals: Array[Animal]
 var enemies:Array[Enemy]
@@ -28,7 +28,7 @@ var hints: Array[Hint]
 var showed_hints:Array[Hint]
 var free_hints: int = 1
 var bonus_hints:Array=[]
-
+var music_player := AudioStreamPlayer.new()
 var goal:float = 150.0:
 	set(value):
 		goal = value
@@ -62,7 +62,8 @@ enum Stage {
 	ROUND_END,
 	SHOP,
 }
-
+func _on_music_finished():
+	music_player.play()
 func _ready() -> void:
 	%Repeat.hide()
 	goal = 150
@@ -73,6 +74,14 @@ func _ready() -> void:
 	hand_animals = await generate_hand(5)
 	%AnimalsField.i(self)
 	%HandSlots.i(self)
+	add_child(music_player)
+	music_player.stream = preload("res://src/assets/sounds/music/theme.mp3")
+	music_player.bus = "Music"
+	music_player.volume_db = -5
+	music_player.autoplay = false
+	music_player.finished.connect(_on_music_finished)
+
+	music_player.play()
 func next_stage():
 	match stage:
 		Stage.ROUND_START:
@@ -121,17 +130,18 @@ func start_round():
 	change_light()
 	current_round += 1
 	
-	chosen_animals.clear()
+	refresh_chosen_animals()
 	#used_consumables.clear()
 	
 	chosen_enemies = await generate_enemies(randf_range(1, max_enemies))
 	await wait_sec(0.4 / game_speed)
-	send_event(AbilityTriggers.Events.ROUND_STARTED, {})
+	
 	
 	chosen_hints = await generate_hints(3)
-	
+	await refresh_chosen_hints()
 	show_available_hints()
 	bonus_hints.clear()
+	send_event(AbilityTriggers.Events.ROUND_STARTED, {})
 	await next_stage()
 	
 func enable_battle_button():
@@ -168,6 +178,7 @@ func generate_enemies(count: int) -> Array[Enemy]:
 		new_enemy.id = id
 		new_enemy.icon_path = e_data["icon"]
 		new_enemy.rate =  e_data["rate"]
+		new_enemy.payout = e_data["payout"]
 		new_enemy.hide()
 		%EnemySlots.add_child(new_enemy)
 
@@ -211,7 +222,7 @@ func generate_hints(count: int) -> Array[Hint]:
 			
 		%HintSlots.add_child(new_hint)
 		result.append(new_hint)
-
+	await refresh_chosen_hints()
 	await save_game()
 	return result
 
@@ -348,8 +359,9 @@ func run_enemy_chain(animal: Animal) -> void:
 		var win := roll_vs_rate(enemy.rate)
 		var ctx:= {"source":animal, "target": enemy}
 		if win:
+			var total_payout = enemy.payout * animal.balance
 			send_event(AbilityTriggers.Events.ANIMAL_WIN,ctx)
-			animal.update_balance(animal.balance)
+			animal.update_balance(total_payout)
 		else:
 			send_event(AbilityTriggers.Events.ANIMAL_LOSS,ctx)
 			animal_lose_balance(animal)
@@ -449,7 +461,8 @@ func split_deposit():
 		
 			
 		animal.update_balance(amount)
-	
+		var ctx:={"amount":amount, "source":animal,"target":animal}
+		send_event(AbilityTriggers.Events.DEPOSITED,ctx)
 func _on_h_slider_value_changed(value: float) -> void:
 	deposit_ratio = value
 	update_deposit_size()
@@ -502,6 +515,13 @@ func refresh_chosen_animals():
 	if chosen_animals.size() >= 3 and (stage  in [Stage.PLAYER_SELECT, Stage.ROUND_START]) :
 		await set_stage(Stage.PLAYER_READY)		
 
+func refresh_chosen_hints():
+	chosen_hints.clear()
+
+	for child in %HintSlots.get_children():
+		if child is Hint:
+			chosen_hints.append(child)
+		
 func refresh_hand_animals():
 	hand_animals.clear()
 	for child in %HandSlots.get_children():
@@ -534,7 +554,7 @@ func show_stage_text_tutorial() -> void:
 		max(1.6, total * 0.015)
 	)
 
-	tutorial_tween.tween_interval(3.0)
+	tutorial_tween.tween_interval(10.0)
 	tutorial_tween.tween_property(label, "modulate:a", 0.0, 0.25)
 
 	await tutorial_tween.finished
@@ -591,16 +611,17 @@ func get_stage_text(stage: Stage) -> String:
 			return ""
 			return "[center][wave amp=3 freq=1.5][color=#ff6b7a]Pay the debt. Survive another round[/color][/wave][/center]"
 		Stage.PLAYER_SELECT:
-			return "[center][wave amp=6 freq=2.2][rainbow freq=0.35 sat=0.8 val=1]Choose up to 3 animals for the fight[/rainbow][/wave][/center]"
+			return "[center][wave amp=6 freq=2.2][rainbow freq=0.35 sat=0.8 val=1]Choose up to 3 animals for the fight. Add them to the field on the left.
+[/rainbow][/wave][/center]"
 
 		Stage.PLAYER_READY:
 			return "[center][wave amp=6 freq=2.0][rainbow freq=0.32 sat=0.8 val=1]Set your deposit then start the battle[/rainbow][/wave][/center]"
 
 		Stage.BATTLE:
-			return "[center][wave amp=8 freq=2.6][rainbow freq=0.45 sat=0.9 val=1]The clash begins no more changes[/rainbow][/wave][/center]"
+			return "[center][wave amp=8 freq=2.6][rainbow freq=0.45 sat=0.9 val=1]The battle begins![/rainbow][/wave][/center]"
 
 		Stage.REWARDS:
-			return "[center][wave amp=5 freq=1.9][rainbow freq=0.28 sat=0.75 val=1]Collect rewards and prepare ahead[/rainbow][/wave][/center]"
+			return "[center][wave amp=5 freq=1.9][rainbow freq=0.28 sat=0.75 val=1]prepare ahead[/rainbow][/wave][/center]"
 
 		Stage.ROUND_END:
 			return "[center][wave amp=4 freq=1.7][rainbow freq=0.22 sat=0.6 val=0.95]Round complete the pressure rises[/rainbow][/wave][/center]"
@@ -688,31 +709,32 @@ func animal_lose_balance(animal: Animal) -> void:
 
 func send_event(event_type: int, ctx: Dictionary) -> void:
 	
-	var observers = []
-	observers.append_array(chosen_animals)
-	observers.append_array(relics)
-	
-	for animal in observers:
+
+	for animal in chosen_animals:	
 		for ab_id in animal.abilities:
 			var ab = db.animal_abilities[ab_id]
 			
 			if ab.trigger == event_type:
 				if is_target_valid(animal, ab, ctx):
 					execute_ability(ab, animal, ctx)
+	for hint in chosen_hints:	
+		for ab_id in hint.abilities:
+			var ab = db.hint_abilities[ab_id]
+			
+			if ab.trigger == event_type:
+				if is_target_valid(hint, ab, ctx):
+			
+					execute_ability(ab, hint, ctx)
 
-
-func is_target_valid(owner: Animal, ab: Dictionary, ctx: Dictionary) -> bool:
+func is_target_valid(target: Node, ab: Dictionary, ctx: Dictionary) -> bool:
 	match ab.target:
 		AbilityTriggers.Targets.ANIMAL:
 			
-			return owner == ctx.get("target")
+			return target == ctx.get("target")
 		AbilityTriggers.Targets.ENEMY:
 			
-			return owner == ctx.get("source")
-		#AbilityTriggers.Targets.NEXT_ANIMAL:
-			
-			#return is_next_after_me(owner, ctx.get("target"))
-			
+			return target == ctx.get("source")
+		
 		AbilityTriggers.Targets.SELF:
 			
 			return true
@@ -722,7 +744,7 @@ func is_target_valid(owner: Animal, ab: Dictionary, ctx: Dictionary) -> bool:
 			return queue.size()>0
 	return false		
 
-func execute_ability(ab: Dictionary, source: Animal, ctx: Dictionary) -> void:
+func execute_ability(ab: Dictionary, source: Node, ctx: Dictionary) -> void:
 	
 	match ab.action:
 		
@@ -746,6 +768,15 @@ func execute_ability(ab: Dictionary, source: Animal, ctx: Dictionary) -> void:
 			
 		AbilityTriggers.Actions.INCREASE_RATE:
 			var enemy :Enemy = ctx["target"]
-			enemy.rate+=10
-		
+			enemy.rate+= ab.value
+		AbilityTriggers.Actions.INCREASE_ALL_PAYOUT:
+			for enemy in chosen_enemies:
+				
+				enemy.payout+= ab.value
+		AbilityTriggers.Actions.ADD_ENEMY_BALANCE:
+			var animal: Animal = ctx["target"]
+			if animal in last_played:
+				print(last_played)
+				await wait_sec(0.5/game_speed)
+				await animal.update_balance(ctx["amount"] *ab.value)
 	

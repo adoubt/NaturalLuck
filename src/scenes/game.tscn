@@ -95,7 +95,6 @@ expand_mode = 2
 layer = 2
 
 [node name="ColorRect" type="TextureRect" parent="PostProcess" unique_id=631976014]
-visible = false
 material = SubResource("ShaderMaterial_gh3at")
 anchors_preset = 15
 anchor_right = 1.0
@@ -233,6 +232,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="TextureRect" type="ColorRect" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer/HBoxContainer/Control" unique_id=530956474]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -250,8 +250,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -91.0
 offset_top = -25.0
-offset_right = 91.0
-offset_bottom = 92.0
+offset_right = 144.5
+offset_bottom = 139.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -264,6 +264,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Relics" type="PanelContainer" parent="CanvasLayer/UI/MarginContainer/VBoxContainer/Top/VBoxContainer" unique_id=1986716006]
+visible = false
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_18yd7")

@@ -19,6 +19,7 @@ var animal_name: String
 @export var min_scale: float = 0.5
 
 var balance_float_tween: Tween
+var music_player := AudioStreamPlayer.new()
 
 func _process(_delta: float) -> void:
 	update_perspective_scale()
@@ -40,7 +41,19 @@ func update_perspective_scale() -> void:
 	var scale_factor = lerp(min_scale, max_scale, (t + 1.0) / 2.0)
 	
 	visual.scale = Vector2.ONE * scale_factor
+
 func _ready() -> void:
+
+	add_child(music_player)
+	music_player.stream = preload("res://src/assets/sounds/ui/money.mp3")
+	music_player.bus = "Music"
+	music_player.volume_db = -5
+	music_player.autoplay = false
+
+
+	music_player.play()
+
+
 	custom_minimum_size = Vector2(128, 128)
 	size = Vector2(128, 128)
 
@@ -80,7 +93,8 @@ func update_balance(amount: float, fine:bool = false) -> void:
 		"[/wave]" +
 		"[/center]"
 	)
-
+	if amount>0:
+		music_player.play()
 	play_balance_popup()
 	start_balance_idle_float()
 	

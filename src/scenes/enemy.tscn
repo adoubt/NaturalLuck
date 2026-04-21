@@ -3,6 +3,16 @@
 [ext_resource type="Script" uid="uid://bo6j5u2mxy1p6" path="res://src/scripts/data/Enemy.gd" id="1_43hrp"]
 [ext_resource type="Texture2D" uid="uid://413cunp6jdug" path="res://icon.svg" id="1_e1bd7"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_43hrp"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 147
+corner_radius_top_right = 101
+corner_radius_bottom_right = 64
+corner_radius_bottom_left = 60
+shadow_color = Color(0, 0, 0, 0.24313726)
+shadow_size = 49
+shadow_offset = Vector2(0, 78.96)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_3rtjt"]
 radius = 60.920223
 
@@ -13,13 +23,36 @@ size_flags_horizontal = 6
 size_flags_vertical = 4
 script = ExtResource("1_43hrp")
 
-[node name="Visual" type="Control" parent="." unique_id=562585537]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Visual" type="Control" parent="." unique_id=1885531644]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Visual" unique_id=1925621159]
-modulate = Color(0.85490197, 0, 0, 1)
+[node name="Panel" type="Panel" parent="Visual" unique_id=753782474]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.475, 0.475)
+pivot_offset = Vector2(62.615, 62.575)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_43hrp")
+
+[node name="TextureRect" type="TextureRect" parent="Visual" unique_id=1050629739]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("1_e1bd7")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2035676289]

@@ -3,9 +3,21 @@ class_name DataBase
 
 var enemy_configs = {
 	0: {
-		"icon": "res://icon.svg",
-		"rate": 0.4,
-		"payout": 1.0,
+		"icon": "res://src/assets/icons/poker.png" ,
+		"rate": 0.6,
+		"payout": 1.6,
+		"abilities":[]
+		},
+	1: {
+		"icon":  "res://src/assets/icons/roulette.png",
+		"rate": 0.5,
+		"payout": 2.0,
+		"abilities":[]
+		},
+	2: {
+		"icon": "res://src/assets/icons/slot_mashine.png",
+		"rate": 0.3,
+		"payout": 4.0,
 		"abilities":[]
 		},
 		}
@@ -59,15 +71,35 @@ var animal_configs = {
 	}
 	
 var hint_configs = {
-	0: {
+	#0: {
+		#"name": "name",
+		#"description": "GAMES this round pay +20% if Owl is on the field",
+		#"abilities":[]
+		#},
+	#1: {
+		#"name": "name",
+		#"description": "MOUSE cannot lose on Second GAME",
+		#"abilities":[]
+		#},
+	3: {
 		"name": "name",
-		"description": "Second Enemy x2 Profit",
-		"abilities":[]
+		"description": "Units played last ROUND gain +20% DEPOSIT",
+		"abilities":[0]
 		},
-	1: {
+	#4: {
+		#"name": "name",
+		#"description": "Solo unit gains +100% PAYOUT",
+		#"abilities":[]
+		#},
+	#5: {
+		#"name": "name",
+		#"description": "DEPOSIT 90% grants +1 ROUND",
+		#"abilities":[]
+		#},
+	6: {
 		"name": "name",
-		"description": "weqfewqfwwef Enemy x2 Profit",
-		"abilities":[]
+		"description": "Solo unit gains +100 payout",
+		"abilities":[1]
 		},
 }
 
@@ -102,7 +134,7 @@ var animal_abilities = {
 		"name":"fox_ability",
 		"trigger": AbilityTriggers.Events.ENEMY_PASSED,
 		"action": AbilityTriggers.Actions.INCREASE_RATE,
-		"value": 1,
+		"value": 0.1,
 		"target": AbilityTriggers.Targets.ENEMY
 	},
 	2: {
@@ -126,4 +158,20 @@ var animal_abilities = {
 		"value": 0.20,
 		"target": AbilityTriggers.Targets.NEXT_ANIMAL
 	}
+}
+var hint_abilities = {
+	0: {
+		"name":"name",
+		"trigger": AbilityTriggers.Events.DEPOSITED,
+		"action": AbilityTriggers.Actions.ADD_ENEMY_BALANCE,
+		"value": 0.20,
+		"target": AbilityTriggers.Targets.ANIMAL
+	},
+	1: {
+		"name":"name",
+		"trigger": AbilityTriggers.Events.BATTLE_STARTED,
+		"action": AbilityTriggers.Actions.INCREASE_ALL_PAYOUT,
+		"value": 0.20,
+		"target": AbilityTriggers.Targets.GAME
+	},
 }
