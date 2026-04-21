@@ -43,7 +43,7 @@ func update_perspective_scale() -> void:
 	visual.scale = Vector2.ONE * scale_factor
 
 func _ready() -> void:
-
+	tooltip_text = description
 	add_child(music_player)
 	music_player.stream = preload("res://src/assets/sounds/ui/money.mp3")
 	music_player.bus = "Music"

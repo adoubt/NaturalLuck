@@ -4,18 +4,21 @@ class_name DataBase
 var enemy_configs = {
 	0: {
 		"icon": "res://src/assets/icons/poker.png" ,
+		"description": "BASE CHANCE 60% PAYOUT x1.6",
 		"rate": 0.6,
 		"payout": 1.6,
 		"abilities":[]
 		},
 	1: {
 		"icon":  "res://src/assets/icons/roulette.png",
+		"description": "BASE CHANCE 50% PAYOUT x2",
 		"rate": 0.5,
 		"payout": 2.0,
 		"abilities":[]
 		},
 	2: {
 		"icon": "res://src/assets/icons/slot_mashine.png",
+		"description": "BASE CHANCE 30% PAYOUT x4",
 		"rate": 0.3,
 		"payout": 4.0,
 		"abilities":[]
@@ -25,7 +28,7 @@ var enemy_configs = {
 var animal_configs = {
 	0: {
 		"name": "Owl",
-		"description": "description",
+		"description": "Leaves behind a SIGNAL for the NEXT ROUND",
 		"icon_idle":"res://src/assets/icons/owl_idle.png",
 		"icon_happy":"res://src/assets/icons/owl_happy.png",
 		"icon_sad":"res://src/assets/icons/owl_sad.png",
@@ -34,7 +37,7 @@ var animal_configs = {
 		},
 	1: {
 		"name": "Hedgehog",
-		"description": "description",
+		"description": "Keeps 30% of its BALANCE",
 		"icon_idle":"res://src/assets/icons/hedgehog_idle.png",
 		"icon_happy":"res://src/assets/icons/hedgehog_happy.png",
 		"icon_sad":"res://src/assets/icons/hedgehog_sad.png",
@@ -43,7 +46,7 @@ var animal_configs = {
 		},
 	2: {
 		"name": "Fox",
-		"description": "description",
+		"description": "After acting, increases chance to defeat the enemy by 10% for the next ally",
 		"icon_idle":"res://src/assets/icons/fox_idle.png",
 		"icon_happy":"res://src/assets/icons/fox_happy.png",
 		"icon_sad":"res://src/assets/icons/fox_sad.png",
@@ -52,7 +55,7 @@ var animal_configs = {
 		},
 	3: {
 		"name": "Frog",
-		"description": "description",
+		"description": "Jumps back into battle",
 		"icon_idle":"res://src/assets/icons/frog_idle.png",
 		"icon_happy":"res://src/assets/icons/frog_happy.png",
 		"icon_sad":"res://src/assets/icons/frog_sad.png",
@@ -61,7 +64,7 @@ var animal_configs = {
 		},
 	4: {
 		"name": "Mouse",
-		"description": "description",
+		"description": "ON LOSE grants +20% BALANCE to the NEXT UNIT",
 		"icon_idle":"res://src/assets/icons/mouse_idle.png",
 		"icon_happy":"res://src/assets/icons/mouse_happy.png",
 		"icon_sad":"res://src/assets/icons/mouse_sad.png",

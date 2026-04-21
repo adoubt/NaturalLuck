@@ -84,6 +84,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Area2D" type="Area2D" parent="." unique_id=218198604]
+visible = false
 position = Vector2(61.23, 60.185)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=114350500]

@@ -1,0 +1,23 @@
+[gd_resource type="AudioBusLayout" format=3 uid="uid://c8erkko87irii"]
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_j3pel"]
+resource_name = "Compressor"
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_j3pel"]
+resource_name = "Reverb"
+
+[sub_resource type="AudioEffectFilter" id="AudioEffectFilter_j3pel"]
+resource_name = "Filter"
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_j3pel"]
+resource_name = "Limiter"
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectCompressor_j3pel")
+bus/0/effect/0/enabled = true
+bus/0/effect/1/effect = SubResource("AudioEffectReverb_j3pel")
+bus/0/effect/1/enabled = true
+bus/0/effect/2/effect = SubResource("AudioEffectFilter_j3pel")
+bus/0/effect/2/enabled = true
+bus/0/effect/3/effect = SubResource("AudioEffectLimiter_j3pel")
+bus/0/effect/3/enabled = true

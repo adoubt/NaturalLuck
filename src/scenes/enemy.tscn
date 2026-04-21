@@ -19,8 +19,13 @@ radius = 60.920223
 [node name="Enemy" type="Control" unique_id=955666644]
 layout_mode = 3
 anchors_preset = 0
+offset_left = -62.0
+offset_top = -62.0
+offset_right = 66.0
+offset_bottom = 66.0
 size_flags_horizontal = 6
-size_flags_vertical = 4
+size_flags_vertical = 6
+tooltip_text = "cvxnxn"
 script = ExtResource("1_43hrp")
 
 [node name="Visual" type="Control" parent="." unique_id=1885531644]
@@ -56,6 +61,8 @@ mouse_filter = 2
 texture = ExtResource("1_e1bd7")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=2035676289]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=44552235]
+position = Vector2(61, 64)
 shape = SubResource("CircleShape2D_3rtjt")

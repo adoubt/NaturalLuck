@@ -29,6 +29,7 @@ var showed_hints:Array[Hint]
 var free_hints: int = 1
 var bonus_hints:Array=[]
 var music_player := AudioStreamPlayer.new()
+var ui_player:= AudioStreamPlayer.new()
 var goal:float = 150.0:
 	set(value):
 		goal = value
@@ -52,6 +53,7 @@ var tutorial_tween: Tween
 var tutorial_busy := false	
 var last_played:Array[Animal]
 var last_played_unit: int
+
 @onready var battle_button:= %Battle
 enum Stage {
 	ROUND_START,
@@ -65,6 +67,7 @@ enum Stage {
 func _on_music_finished():
 	music_player.play()
 func _ready() -> void:
+	%DeathScreen.visible= false
 	%Repeat.hide()
 	goal = 150
 	update_deposit_size()
@@ -74,10 +77,12 @@ func _ready() -> void:
 	hand_animals = await generate_hand(5)
 	%AnimalsField.i(self)
 	%HandSlots.i(self)
+	add_child(ui_player)
+	
 	add_child(music_player)
 	music_player.stream = preload("res://src/assets/sounds/music/theme.mp3")
-	music_player.bus = "Music"
-	music_player.volume_db = -5
+	#music_player.bus = "Music"
+	music_player.volume_db = -20
 	music_player.autoplay = false
 	music_player.finished.connect(_on_music_finished)
 
@@ -142,6 +147,7 @@ func start_round():
 	show_available_hints()
 	bonus_hints.clear()
 	send_event(AbilityTriggers.Events.ROUND_STARTED, {})
+	#%ChosenAnimalSlots.modulate.a = 0.9
 	await next_stage()
 	
 func enable_battle_button():
@@ -179,6 +185,7 @@ func generate_enemies(count: int) -> Array[Enemy]:
 		new_enemy.icon_path = e_data["icon"]
 		new_enemy.rate =  e_data["rate"]
 		new_enemy.payout = e_data["payout"]
+		new_enemy.description = e_data["description"]
 		new_enemy.hide()
 		%EnemySlots.add_child(new_enemy)
 
@@ -410,6 +417,7 @@ func roll_vs_rate(rate: float) -> bool:
 
 	return win				
 func start_battle():
+	#%ChosenAnimalSlots.modulate.a = 0.0
 	await wait_sec(0.25 / game_speed)
 	await split_deposit()
 	await wait_sec(1.0 / game_speed)
@@ -434,7 +442,8 @@ func finalize_round():
 	
 func check_goal():
 	if _balance < goal:
-		get_tree().reload_current_scene()
+		play_death()
+		
 	else: 
 		goal*=4
 		max_enemies+=1
@@ -779,4 +788,42 @@ func execute_ability(ab: Dictionary, source: Node, ctx: Dictionary) -> void:
 				print(last_played)
 				await wait_sec(0.5/game_speed)
 				await animal.update_balance(ctx["amount"] *ab.value)
+
+func play_death():
+	ui_player.stream = preload("res://src/assets/sounds/ui/death.mp3")
+	ui_player.volume_db = -20
+	ui_player.play()
+	%DeathScreen.visible = true
+	%CenterPanel.visible = false
+	var mat := %DeathScreen.get_child(0).material as ShaderMaterial
+	mat.set_shader_parameter("Alpha", 0.1)
+
+	var tween = create_tween()
+	tween.tween_method(
+		func(value): mat.set_shader_parameter("Alpha", value),
+		0.1,
+		3.0,
+		0.8
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
+
+func _on_button_pressed() -> void:
+	get_tree().reload_current_scene()
+
+
+
+func _on_game_speed_value_changed(value: float) -> void:
+	Engine.time_scale =value
+
+
+func _on_sound_value_changed(value: float) -> void:
+	if value <= 0.01:
+		AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index("Master"),
+			-80
+		)
+	else:
+		AudioServer.set_bus_volume_db(
+			AudioServer.get_bus_index("Master"),
+			linear_to_db(value)
+		)

@@ -5,13 +5,14 @@ var id: int
 var icon_path: String
 var rate :float
 var payout:float
+var description: String = ""
 @onready var sprite = $Visual/TextureRect
 @onready var visual = $Visual
 var tween
 
 func _ready():
 	sprite.texture = load(icon_path)
-
+	tooltip_text = description
 
 func play_spawn():
 	show()
